@@ -42,12 +42,50 @@ public class SongControllerServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		try {
-		//list the songs in MVC style
-		listSongs(request, response);
+			//read the "command" parameter
+			String theCommand = request.getParameter("command");
+			
+			// if the command is missing, then default to listing song
+			if(theCommand == null) {
+				theCommand = "list";
+			}
+			
+			//route to the appropriate method
+			switch(theCommand) {
+			
+			case "list":
+				listSongs(request,response);
+			
+			case "add":
+				addSong(request,response);
+				
+			default:
+				listSongs(request,response);
+			}
+			
 		}
 		catch(Exception e) {
 			throw new ServletException(e);
 		}
+	}
+
+	private void addSong(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		//read song info from form data
+		String title = request.getParameter("title");
+		String startingLyrics = request.getParameter("startingLyrics");
+		String reff = request.getParameter("reff");
+		String baseKey = request.getParameter("baseKey");
+		
+		//create a new song object
+		Song theSong = new Song(title,startingLyrics,reff,baseKey);
+		
+		//add the song to the database
+		songDbUtil.addSong(theSong);
+		
+		//send back to main page (song list)
+		listSongs(request,response);
+		
 	}
 
 	private void listSongs(HttpServletRequest request, HttpServletResponse response) 

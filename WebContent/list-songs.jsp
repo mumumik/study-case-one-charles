@@ -12,12 +12,17 @@
 	
 	<div id="wrapper">
 		<div id="header">
-			<h2>Song List</h2>
+			<h2>Study Case Charles</h2>
 		</div>
 	</div>
 	
 	<div id="container">
 		<div id="content">
+		
+			<input type="button" value="Add Song"
+					onclick="window.location.href='add-song-form.jsp'; return false;"
+					class="add-song-button"
+			 />
 			<table>
 				<tr>
 					<th>Judul</th>

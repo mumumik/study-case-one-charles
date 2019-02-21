@@ -1,6 +1,7 @@
 package com.mumumik.web.jdbc;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -83,6 +84,40 @@ public class SongDbUtil {
 		}
 		catch(Exception e) {
 			e.printStackTrace();
+		}
+		
+	}
+
+	public void addSong(Song theSong) throws Exception {
+		
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		
+		try {
+			//get db connection
+			myConn = dataSource.getConnection();
+		
+			//create sql insert
+			String sql = "insert into song "
+						+ "(title, startingLyrics, reff, baseKey) "
+						+ "values (?, ?, ?, ?)";
+			
+			myStmt = myConn.prepareStatement(sql);
+			
+			//set the param values for the song
+			myStmt.setString(1, theSong.getTitle());
+			myStmt.setString(2, theSong.getStartingLyrics());
+			myStmt.setString(3, theSong.getReff());
+			myStmt.setString(4, theSong.getBaseKey());
+			
+			//execute sql insert
+			myStmt.execute();
+		
+		
+		}
+		finally {
+			//clean up JDBC objects
+			close(myConn,myStmt, null);
 		}
 		
 	}
