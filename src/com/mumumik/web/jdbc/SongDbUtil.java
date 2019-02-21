@@ -121,4 +121,91 @@ public class SongDbUtil {
 		}
 		
 	}
+
+	public Song getSong(String theSongId) throws Exception {
+		
+		Song theSong = null;
+		
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		ResultSet myRs = null;
+		int songId;
+		
+		try {
+			//convert song id to int
+			songId = Integer.parseInt(theSongId);
+			
+			//get connection to database
+			myConn = dataSource.getConnection();
+			
+			
+			//create sql to get selected song
+			String sql = "select * from song where id=?";
+			
+			
+			//create prepared statement
+			myStmt = myConn.prepareStatement(sql);
+			
+			
+			//set params
+			myStmt.setInt(1, songId);
+			
+			//execute statement
+			myRs = myStmt.executeQuery();
+			
+			//retrieve data from result set row
+			if(myRs.next()) {
+				String title = myRs.getString("title");
+				String startingLyrics = myRs.getString("startingLyrics");
+				String reff = myRs.getString("reff");
+				String baseKey = myRs.getString("baseKey");
+				
+				//use the songId during construction
+				theSong = new Song(songId,title,startingLyrics,reff,baseKey);
+			}
+			else {
+				throw new Exception("Tidak dapat menemukan lagu dengan id : " + songId);
+			}
+			
+			return theSong;
+		}
+		finally {
+			//clean up JDBC objects
+			close(myConn,myStmt, myRs);
+		}
+		
+	}
+
+	public void updateSong(Song theSong) throws Exception{
+		
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		
+		try {
+			//get db connection
+			myConn = dataSource.getConnection();
+			
+			//create sql statement
+			String sql = "update song "
+						+ "set title=?, startingLyrics=?, reff=? , baseKey=? "
+						+ "where id=?";
+			
+			//prepare statement
+			myStmt = myConn.prepareStatement(sql);
+			
+			//set params
+			myStmt.setString(1, theSong.getTitle());
+			myStmt.setString(2, theSong.getStartingLyrics());
+			myStmt.setString(3, theSong.getReff());
+			myStmt.setString(4, theSong.getBaseKey());
+			myStmt.setInt(5, theSong.getId());
+			
+			//execute sql statement
+			myStmt.execute();
+		}
+		finally {
+			//clean up JDBC objects
+			close(myConn,myStmt, null);
+		}
+	}
 }

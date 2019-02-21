@@ -29,14 +29,23 @@
 					<th>Lirik Awal</th>
 					<th>Lirik Reff</th>
 					<th>Kunci Dasar</th>
+					<th>Aksi</th>
 				</tr>
 				
-				<c:forEach var="tempSong" items="${song_list}">
+				<c:forEach var="tempSong" items="${song_list}"> 
+					
+					<!-- set up a link for each song -->
+					<c:url var="tempLink" value="SongControllerServlet">
+						<c:param name="command" value="load" />
+						<c:param name="songId" value="${tempSong.id}" />
+					</c:url>
+					
 					<tr>
 						<td>${tempSong.title}</td>
 						<td>${tempSong.startingLyrics}</td>
 						<td>${tempSong.reff}</td>
 						<td>${tempSong.baseKey}</td>
+						<td><a href="${tempLink}">Update</a></td>
 					</tr>
 				</c:forEach>
 			</table>

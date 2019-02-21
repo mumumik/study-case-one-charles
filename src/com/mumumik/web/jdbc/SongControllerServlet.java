@@ -55,9 +55,19 @@ public class SongControllerServlet extends HttpServlet {
 			
 			case "list":
 				listSongs(request,response);
+				break;
 			
 			case "add":
 				addSong(request,response);
+				break;
+				
+			case "load":
+				loadSong(request,response);
+				break;
+				
+			case "update":
+				updateSong(request,response);
+				break;
 				
 			default:
 				listSongs(request,response);
@@ -67,6 +77,46 @@ public class SongControllerServlet extends HttpServlet {
 		catch(Exception e) {
 			throw new ServletException(e);
 		}
+	}
+
+	private void updateSong(HttpServletRequest request, HttpServletResponse response) 
+		throws Exception{
+		
+		//read song info from form data
+		int id = Integer.parseInt(request.getParameter("songId"));
+		String title = request.getParameter("title");
+		String startingLyrics = request.getParameter("startingLyrics");
+		String reff = request.getParameter("reff");
+		String baseKey = request.getParameter("baseKey");
+		
+		//create a new song object
+		Song theSong = new Song(id, title, startingLyrics, reff, baseKey);
+		
+		//perform update on database
+		songDbUtil.updateSong(theSong);
+		
+		// send them back to the list song page
+		listSongs(request,response);
+		
+	}
+
+	private void loadSong(HttpServletRequest request, HttpServletResponse response) 
+		throws Exception{
+		
+		// read song id from form data
+		String theSongId = request.getParameter("songId");
+		
+		// get song from database(db util)
+		Song theSong = songDbUtil.getSong(theSongId);
+		
+		// place song in the request attribute
+		request.setAttribute("the_song", theSong);
+		
+		// send jsp page: update-song-form.jsp
+		RequestDispatcher dispatcher = 
+					request.getRequestDispatcher("/update-song-form.jsp");
+		dispatcher.forward(request,response);
+		
 	}
 
 	private void addSong(HttpServletRequest request, HttpServletResponse response) throws Exception {
