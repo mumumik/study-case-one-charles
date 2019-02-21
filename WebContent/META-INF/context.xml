@@ -1,10 +1,10 @@
 <Context>
 
-  <Resource name="jdbc/web_student_tracker" 
+  <Resource name="jdbc/study_case_one_charles" 
   			auth="Container" type="javax.sql.DataSource"
                maxActive="20" maxIdle="5" maxWait="10000"
-               username="webstudent" password="webstudent" 
+               username="studycase" password="studycase" 
                driverClassName="com.mysql.cj.jdbc.Driver"
-               url="jdbc:mysql://localhost:3306/web_student_tracker"/>
+               url="jdbc:mysql://localhost:3306/study_case_one_charles"/>
 
 </Context>

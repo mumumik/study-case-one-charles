@@ -20,8 +20,8 @@ import javax.sql.DataSource;
 public class TestServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	// Define datasource/ connection pool for Resource Injection
-	@Resource(name="jdbc/web_student_tracker")
+	// Define datasource/connection pool for Resource Injection
+	@Resource(name="jdbc/study_case_one_charles")
 	private DataSource dataSource;
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
