@@ -34,9 +34,15 @@
 				
 				<c:forEach var="tempSong" items="${song_list}"> 
 					
-					<!-- set up a link for each song -->
+					<!-- set up a update link for each song -->
 					<c:url var="tempLink" value="SongControllerServlet">
 						<c:param name="command" value="load" />
+						<c:param name="songId" value="${tempSong.id}" />
+					</c:url>
+					
+					<!-- set up a delete link for each song -->
+					<c:url var="deleteLink" value="SongControllerServlet">
+						<c:param name="command" value="delete" />
 						<c:param name="songId" value="${tempSong.id}" />
 					</c:url>
 					
@@ -45,7 +51,13 @@
 						<td>${tempSong.startingLyrics}</td>
 						<td>${tempSong.reff}</td>
 						<td>${tempSong.baseKey}</td>
-						<td><a href="${tempLink}">Update</a></td>
+						<td>
+							<a href="${tempLink}">Ubah</a>
+							 | 
+							<a href="${deleteLink}"
+							onclick="if (!(confirm('Apa anda yakin akan menghapus lagu ini?'))) return false">
+							Hapus</a>
+						</td>
 					</tr>
 				</c:forEach>
 			</table>

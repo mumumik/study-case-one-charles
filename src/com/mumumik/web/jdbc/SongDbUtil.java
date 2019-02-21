@@ -208,4 +208,36 @@ public class SongDbUtil {
 			close(myConn,myStmt, null);
 		}
 	}
+
+	public void deleteSong(String theSongId) throws Exception {
+		
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		int songId;
+		
+		try {
+			//convert song id to int
+			songId = Integer.parseInt(theSongId);
+			
+			//get db connection
+			myConn = dataSource.getConnection();
+			
+			//create sql statement
+			String sql = "delete from song where id=?";
+			
+			//prepare statement
+			myStmt = myConn.prepareStatement(sql);
+			
+			//set params
+			myStmt.setInt(1, songId);
+			
+			//execute sql statement
+			myStmt.execute();
+		}
+		finally {
+			//clean up JDBC objects
+			close(myConn,myStmt, null);
+		}
+		
+	}
 }

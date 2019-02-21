@@ -69,6 +69,10 @@ public class SongControllerServlet extends HttpServlet {
 				updateSong(request,response);
 				break;
 				
+			case "delete":
+				deleteSong(request,response);
+				break;
+				
 			default:
 				listSongs(request,response);
 			}
@@ -77,6 +81,20 @@ public class SongControllerServlet extends HttpServlet {
 		catch(Exception e) {
 			throw new ServletException(e);
 		}
+	}
+
+	private void deleteSong(HttpServletRequest request, HttpServletResponse response) 
+		throws Exception{
+		
+		//read song id from form data
+		String theSongId = request.getParameter("songId");
+				
+		//perform update on database
+		songDbUtil.deleteSong(theSongId);
+				
+		// send them back to the list song page
+		listSongs(request,response);
+		
 	}
 
 	private void updateSong(HttpServletRequest request, HttpServletResponse response) 
